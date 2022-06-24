@@ -1,0 +1,22 @@
+{
+    "name": "aditamairhamdev/lara-model",
+    "description": "A package to implement repository pattern for laravel models",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Aditamairhamdev\\LaraModel\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "aditamairham66",
+            "email": "aditamairham66@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.3|^8.0",
+        "doctrine/dbal": "^3.3"
+    }
+}
