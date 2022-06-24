@@ -5,6 +5,7 @@ namespace Aditamairhamdev\LaraModel\Commands;
 use Aditamairhamdev\LaraModel\Helpers\File;
 use Aditamairhamdev\LaraModel\Helpers\General;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class MakeLaraModel extends Command
@@ -15,7 +16,7 @@ class MakeLaraModel extends Command
      *
      * @var string
      */
-    protected $signature = 'make:lara-model {table=All}';
+    protected $signature = 'make:lara-model {table=All} {--connection=mysql}';
 
     /**
      * The console command description.
@@ -42,8 +43,21 @@ class MakeLaraModel extends Command
     public function handle()
     {
         $getTable = $this->argument("table");
-        $getConnection = "mysql";
+        $getConnection = $this->option("connection");
 
+        if($getTable == "All") {
+            $tables = DB::connection()->getDoctrineSchemaManager()->listTableNames();
+            foreach($tables as $table) {
+                $this->generateByTable($table, $getConnection);
+            }
+        }else{
+            $this->generateByTable($getTable, $getConnection);
+        }
+    }
+
+
+    protected function generateByTable($getTable, $getConnection)
+    {
         // make path folder
         $pathModels = self::appPath('Models');
         if(!file_exists($pathModels)) {
@@ -98,6 +112,6 @@ class MakeLaraModel extends Command
             file_put_contents("$pathRepo/$className"."Repository.php", $getContentRepo);
             $this->info($className." repository has been created!");
         }
-
     }
+
 }
